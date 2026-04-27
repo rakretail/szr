@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,17 +59,17 @@
             --bg: #f2f7f7;
             --card-bg: #ffffff;
             --text-main: #1a2a2a;
-            --rak-text: #1a2a2a;
-            --Sheikh Zayed-color: #1a2a2a; 
+            --szr-text: #1a2a2a;
+            --szr-color: #1a2a2a; 
             --shadow-soft: 0 10px 30px rgba(0, 102, 102, 0.08);
         }
         body.dark {
             --bg: #050a0a;
             --card-bg: #0f1a1a;
             --text-main: #e0f2f2;
-            --rak-text: #ffffff;
+            --szr-text: #ffffff;
             --primary: #00a8a8;
-            --Sheikh Zayed-color: #ffffff; 
+            --szr-color: #ffffff; 
         }
         body { 
             font-family: 'Poppins', sans-serif;
@@ -88,12 +89,12 @@
             flex-direction: column;
             align-items: center;
         }
-        .rak-left {
+        .szr-left {
             position: absolute;
             left: 0; top: 10px;
             font-size: 2.4rem;
             font-weight: 800;
-            color: var(--rak-text);
+            color: var(--szr-text);
             letter-spacing: -1.5px;
         }
         .top-controls { position: absolute; right: 0; top: 10px; display: flex; gap: 8px; }
@@ -101,7 +102,7 @@
             font-size: 2.4rem; 
             font-weight: 800;
             margin: 10px 0;
-            color: var(--Sheikh Zayed-color); 
+            color: var(--szr-color); 
             letter-spacing: -1.5px;
         }
         .bulletin-board {
@@ -203,8 +204,162 @@
             background: var(--card-bg); cursor: pointer; display: flex; align-items: center; justify-content: center;
             box-shadow: var(--shadow-soft); color: var(--primary); font-size: 1.2rem;
         }
-        #time { font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; color: var(--primary); margin: 0; letter-spacing: -1px; }
-        #date-info { font-size: 1.1rem; opacity: 0.8; font-weight: 500; margin-bottom: 15px; }
+        /* ============================================================
+           ENHANCED: Clock & date strip — wide horizontal panel with
+           DAY · TIME · DATE columns. Editorial typography, ultra-clean,
+           kiosk-ready. Designed to feel like a flagship store display.
+           ============================================================ */
+        #datetime {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 28px;
+            width: 100%;
+            max-width: 720px;
+            margin: 14px auto 22px;
+            padding: 22px 36px;
+            border-radius: 26px;
+            background:
+                radial-gradient(ellipse at 0% 0%, rgba(0,210,210,0.10), transparent 55%),
+                radial-gradient(ellipse at 100% 100%, rgba(0,184,148,0.10), transparent 55%),
+                linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg) 100%);
+            border: 1px solid rgba(0,168,168,0.14);
+            box-shadow:
+                0 18px 40px rgba(0,102,102,0.10),
+                0 2px 6px rgba(0,102,102,0.06),
+                inset 0 1px 0 rgba(255,255,255,0.6);
+            overflow: hidden;
+        }
+        body.dark #datetime {
+            background:
+                radial-gradient(ellipse at 0% 0%, rgba(0,210,210,0.18), transparent 55%),
+                radial-gradient(ellipse at 100% 100%, rgba(0,184,148,0.14), transparent 55%),
+                linear-gradient(135deg, var(--card-bg) 0%, var(--card-bg) 100%);
+            border-color: rgba(0,210,210,0.18);
+            box-shadow:
+                0 18px 40px rgba(0,0,0,0.45),
+                inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        /* Vertical hairline separators between the three columns. */
+        #datetime::before,
+        #datetime::after {
+            content: '';
+            position: absolute;
+            top: 22%;
+            bottom: 22%;
+            width: 1px;
+            background: linear-gradient(180deg,
+                transparent, rgba(0,168,168,0.32), transparent);
+        }
+        #datetime::before { left: calc(33.333% - 4px); }
+        #datetime::after  { right: calc(33.333% - 4px); }
+        body.dark #datetime::before,
+        body.dark #datetime::after {
+            background: linear-gradient(180deg,
+                transparent, rgba(0,210,210,0.32), transparent);
+        }
+
+        /* ===== Left column: DAY ===== */
+        .clk-day {
+            text-align: left;
+        }
+        .clk-day .clk-eyebrow {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.62rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--primary); opacity: 0.7;
+            margin-bottom: 4px;
+        }
+        .clk-day .clk-eyebrow .clk-live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #00d68f;
+            box-shadow: 0 0 0 0 rgba(0,214,143,0.55);
+            animation: clk-pulse 1.6s ease-out infinite;
+        }
+        @keyframes clk-pulse {
+            0%   { box-shadow: 0 0 0 0   rgba(0,214,143,0.55); }
+            70%  { box-shadow: 0 0 0 9px rgba(0,214,143,0);    }
+            100% { box-shadow: 0 0 0 0   rgba(0,214,143,0);    }
+        }
+        #day {
+            display: block;
+            font-size: clamp(1.05rem, 2.4vw, 1.5rem);
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.4px;
+            line-height: 1.1;
+        }
+
+        /* ===== Center column: TIME ===== */
+        #time {
+            margin: 0;
+            font-size: clamp(2.6rem, 7vw, 3.6rem);
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            letter-spacing: -1px;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum" 1;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0;
+            white-space: nowrap;
+        }
+        #time .clk-sep {
+            color: var(--accent);
+            opacity: 0.5;
+            margin: 0 6px;
+            font-weight: 600;
+            transform: translateY(-4px);
+        }
+        #time .clk-sec {
+            font-size: 0.42em;
+            font-weight: 800;
+            color: var(--primary);
+            opacity: 0.55;
+            margin-left: 10px;
+            letter-spacing: 1px;
+            align-self: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== Right column: DATE ===== */
+        .clk-date {
+            text-align: right;
+        }
+        .clk-date .clk-eyebrow {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.62rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--primary); opacity: 0.7;
+            margin-bottom: 4px;
+            justify-content: flex-end;
+        }
+        #date {
+            display: block;
+            font-size: clamp(1.05rem, 2.4vw, 1.5rem);
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.4px;
+            line-height: 1.1;
+            font-variant-numeric: tabular-nums;
+        }
+        #date-info {
+            margin: 0;
+            font-size: 0;
+        }
+        @media (max-width: 640px) {
+            #datetime {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                padding: 18px 22px;
+                text-align: center;
+            }
+            #datetime::before, #datetime::after { display: none; }
+            .clk-day, .clk-date { text-align: center; }
+            .clk-day .clk-eyebrow, .clk-date .clk-eyebrow { justify-content: center; }
+        }
         /* ============================================================
            ENHANCED: Peak Activity card — gradient hero look with
            primary window, sub-metrics, and a busiest day-of-week badge.
@@ -617,7 +772,98 @@
             text-align: center; padding: 30px 10px;
             opacity: 0.5; font-style: italic; font-size: 0.9rem;
         }
-        .chart-wrapper { background: var(--card-bg); padding: 20px; border-radius: 35px; box-shadow: var(--shadow-soft); margin-bottom: 30px; height: 400px; }
+        /* ============================================================
+           ENHANCED: Traffic Trends chart card — gradient header bar,
+           accent border, KPI strip above the canvas, polished select.
+           ============================================================ */
+        .chart-wrapper {
+            position: relative;
+            background: var(--card-bg);
+            padding: 22px 24px 18px;
+            border-radius: 28px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+            overflow: hidden;
+        }
+        .chart-wrapper::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg,
+                var(--primary), var(--accent), #00b894, var(--primary));
+            background-size: 200% 100%;
+            animation: chart-bar-shine 8s linear infinite;
+            opacity: 0.85;
+        }
+        @keyframes chart-bar-shine {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .chart-head {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 12px; margin-bottom: 14px;
+        }
+        .chart-title {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 1rem; font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin: 0;
+        }
+        .chart-title .ct-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            color: #fff; font-size: 0.95rem;
+            box-shadow: 0 4px 14px rgba(0,102,102,0.28);
+        }
+        .chart-kpis {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            margin-bottom: 14px;
+        }
+        .chart-kpi {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: linear-gradient(135deg,
+                rgba(0,102,102,0.06), rgba(0,184,148,0.10));
+            border: 1px solid rgba(0,168,168,0.18);
+            font-size: 0.78rem; font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 0.2px;
+        }
+        body.dark .chart-kpi {
+            background: linear-gradient(135deg,
+                rgba(0,168,168,0.10), rgba(0,184,148,0.06));
+            border-color: rgba(0,210,210,0.22);
+        }
+        .chart-kpi .ck-label { opacity: 0.65; font-weight: 600; }
+        .chart-kpi .ck-val   { color: var(--primary); font-weight: 800; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+        .chart-kpi .ck-delta { font-weight: 800; font-size: 0.72rem; padding: 2px 6px; border-radius: 6px; }
+        .chart-kpi .ck-delta.up   { background: rgba(0,184,148,0.15); color: #00a86b; }
+        .chart-kpi .ck-delta.down { background: rgba(238,9,121,0.12);  color: #e84393; }
+        .chart-kpi .ck-delta.flat { background: rgba(120,120,120,0.15); color: #777; }
+        #viewSelector {
+            padding: 8px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,168,168,0.25);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,102,102,0.08);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #viewSelector:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 14px rgba(0,102,102,0.14);
+        }
+        .chart-canvas-wrap {
+            position: relative;
+            height: 340px;
+        }
 
         /* ============================================================
            Shift Heatmap — day-of-week × hour grid showing walk-in
@@ -654,9 +900,10 @@
         .heatmap-scroll::-webkit-scrollbar-thumb { background: rgba(0,102,102,0.3); border-radius: 6px; }
         .heatmap-grid {
             display: grid;
-            grid-template-columns: 56px repeat(24, minmax(22px, 1fr));
-            gap: 3px;
-            min-width: 640px;
+            grid-template-columns: 56px repeat(17, minmax(0, 1fr));
+            gap: 4px;
+            width: 100%;
+            min-width: 100%;
         }
         .heatmap-grid .hm-corner { }
         .heatmap-grid .hm-hour-label,
@@ -671,9 +918,8 @@
         }
         .heatmap-grid .hm-cell {
             position: relative;
-            aspect-ratio: 1 / 1;
-            min-height: 22px;
-            border-radius: 6px;
+            height: 36px;
+            border-radius: 7px;
             background: rgba(0,102,102,0.06);
             transition: transform 0.12s ease, box-shadow 0.12s ease;
             cursor: default;
@@ -692,6 +938,16 @@
             box-shadow: 0 4px 14px rgba(0,102,102,0.35);
             z-index: 2;
         }
+        /* End-of-day spacer column — sits under the trailing "00" label.
+           Visually lighter than a real cell so the day clearly ends at midnight. */
+        .heatmap-grid .hm-end {
+            height: 36px;
+            border-radius: 7px;
+            background: transparent;
+            border-left: 2px dashed rgba(0,102,102,0.18);
+            opacity: 0.6;
+        }
+        body.dark .heatmap-grid .hm-end { border-left-color: rgba(255,255,255,0.18); }
         .heatmap-legend {
             display: flex; align-items: center; justify-content: flex-end;
             gap: 8px; margin-top: 12px;
@@ -726,7 +982,7 @@
         .footer-export h3 { margin-top: 0; }
         .footer-export input { margin-bottom: 10px; width: 130px; }
         @media (max-width: 768px) {
-            .rak-left { position: static; font-size: 2rem; margin-bottom: -10px; }
+            .szr-left { position: static; font-size: 2rem; margin-bottom: -10px; }
             .top-controls { position: static; margin-bottom: 15px; }
             .showroom-title { font-size: 1.8rem; }
             .totals { grid-template-columns: 1fr; }
@@ -930,7 +1186,7 @@
 
 <div class="container">
     <header>
-        <div class="rak-left">RAK</div>
+        <div class="szr-left">RAK</div>
         <div class="top-controls">
             <button class="btn-tool" onclick="toggleFullScreen()">⛶</button>
             <button class="btn-tool" onclick="toggleDark()">🌓</button>
@@ -952,8 +1208,17 @@
         </div>
 
         <div id="datetime">
-            <h1 id="time">00:00:00</h1>
-            <div id="date-info"><span id="day"></span>, <span id="date"></span></div>
+            <div class="clk-day">
+                <span class="clk-eyebrow"><span class="clk-live-dot"></span>Today</span>
+                <span id="day"></span>
+            </div>
+            <h1 id="time">
+                <span id="time-h">00</span><span class="clk-sep">:</span><span id="time-m">00</span><span class="clk-sec" id="time-s">00</span>
+            </h1>
+            <div class="clk-date">
+                <span class="clk-eyebrow">Date</span>
+                <div id="date-info"><span id="date"></span></div>
+            </div>
         </div>
     </header>
 
@@ -1013,14 +1278,17 @@
 
     <!-- Charts now appear directly under the executive grid (more important than the log) -->
     <div class="chart-wrapper">
-        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="margin:0; font-weight: 700;">Traffic Trends</h3>
-            <select id="viewSelector" onchange="renderChart()" style="padding:8px; border-radius:10px; border:1px solid #ddd; font-family:inherit;">
+        <div class="chart-head">
+            <h3 class="chart-title"><span class="ct-icon">📈</span> Traffic Trends</h3>
+            <select id="viewSelector" onchange="renderChart()">
                 <option value="line">Daily Trend (Line)</option>
                 <option value="bar">Day of Week Analysis (Bar)</option>
             </select>
         </div>
-        <canvas id="walkinChart"></canvas>
+        <div class="chart-kpis" id="chartKpis"></div>
+        <div class="chart-canvas-wrap">
+            <canvas id="walkinChart"></canvas>
+        </div>
     </div>
 
     <!-- ENHANCED: Shift Heatmap — day-of-week × hour intensity grid.
@@ -1031,7 +1299,7 @@
                 <span class="hm-icon">⚡</span>
                 Shift Heatmap
             </div>
-            <div class="heatmap-sub">Walk-in intensity by day &amp; hour · last 30 days</div>
+            <div class="heatmap-sub">Walk-in intensity · 08:00 → 00:00 · last 30 days</div>
         </div>
         <div class="heatmap-scroll">
             <div class="heatmap-grid" id="heatmapGrid"></div>
@@ -1713,7 +1981,7 @@ function update(name, val) {
                     pin: loggedInPin
                 });
             } else {
-                alert(`Access Denied: You are ${dist.toFixed(2)}km away. You must be at Sheikh Zayed Showroom.`);
+                alert(`Access Denied: You are ${dist.toFixed(2)}km away. You must be at szran Showroom.`);
             }
         }, 
         (err) => alert("Location Error: Please ensure GPS is ON and permission is granted."), 
@@ -1739,7 +2007,7 @@ function updateInsights(monthlyCounts, dailyTotal) {
     if (hour >= 12 && hour < 17) { greetIcon = "☀️"; greetWord = "Good afternoon"; }
     else if (hour >= 17 && hour < 22) { greetIcon = "🌇"; greetWord = "Good evening"; }
     else if (hour >= 22 || hour < 5) { greetIcon = "🌙"; greetWord = "Late shift, legends"; }
-    messages.push(`${greetIcon} <span class="feed-pill blue">TEAM SHEIKH ZAYED</span> ${greetWord}, Sheikh Zayed Showroom — let's make today legendary!`);
+    messages.push(`${greetIcon} <span class="feed-pill blue">TEAM SZR</span> ${greetWord}, Sheikh Zayed Showroom — let's make today legendary!`);
 
     // ---------- Headline stats ----------
     if (dailyTotal > 0) {
@@ -1811,7 +2079,7 @@ function updateInsights(monthlyCounts, dailyTotal) {
         `💬 "People don't buy for logical reasons. They buy for emotional reasons." — Zig Ziglar`,
         `💬 "Begin by always expecting good things to happen." — Tom Hopkins`,
         `💬 "Treat objections as requests for further information." — Brian Tracy`,
-        `💬 "Today's walk-in is tomorrow's repeat customer." — Sheikh Zayed Floor Wisdom`,
+        `💬 "Today's walk-in is tomorrow's repeat customer." — Sheikh Zayed Showroom Floor Wisdom`,
         `💬 "A satisfied customer is the best business strategy of all." — Michael LeBoeuf`,
         `💬 "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time." — Thomas Edison`
     ];
@@ -2119,17 +2387,24 @@ function renderShiftHeatmap(data) {
     const dayShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const cells = [];
 
-    // Header row: blank corner + 24 hour labels (only show every 3rd to keep tidy)
+    // Header row: blank corner + hour labels for 08:00 → 00:00 only
+    // (earlier hours are hidden — showroom is closed and the cells were noise)
+    // We render hours 8..23 as cells, plus a final "00" label column for clarity.
+    const HOUR_START = 8;   // inclusive
+    const HOUR_END   = 24;  // exclusive  (so cells = 8..23 = 16 cells; label column = 17)
     cells.push(`<div class="hm-corner"></div>`);
-    for (let h = 0; h < 24; h++) {
-        const lbl = (h % 3 === 0) ? (h < 10 ? "0" + h : "" + h) : "";
+    for (let h = HOUR_START; h <= HOUR_END; h++) {
+        const realH = h % 24;
+        // Show every 2nd label so the row stays readable but informative.
+        const show = ((h - HOUR_START) % 2 === 0) || h === HOUR_END;
+        const lbl = show ? (realH < 10 ? "0" + realH : "" + realH) : "";
         cells.push(`<div class="hm-hour-label">${lbl}</div>`);
     }
 
-    // 7 day rows
+    // 7 day rows  (16 hour cells per row + 1 trailing label column = 17 total)
     for (let d = 0; d < 7; d++) {
         cells.push(`<div class="hm-day-label">${dayShort[d]}</div>`);
-        for (let h = 0; h < 24; h++) {
+        for (let h = HOUR_START; h < HOUR_END; h++) {
             const v = dowHourCounts[d][h];
             const i = bucketOf(v);
             const hh = h < 10 ? "0" + h : "" + h;
@@ -2138,6 +2413,8 @@ function renderShiftHeatmap(data) {
                 : `${dayNames[d]} ${hh}:00 · no walk-ins`;
             cells.push(`<div class="hm-cell" data-i="${i}" title="${tip}"></div>`);
         }
+        // Trailing visual end-of-day marker so the "00" label has a column
+        cells.push(`<div class="hm-end" title="End of day"></div>`);
     }
 
     grid.innerHTML = cells.join('');
@@ -2173,7 +2450,8 @@ function renderPeakCard(analytics) {
 
 function renderChart() {
     const type = document.getElementById("viewSelector").value;
-    const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+    const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#006666';
+    const accent  = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()  || '#00d2d2';
     const isDark = document.body.classList.contains('dark');
     const now = new Date();
     let labels = [], data = [];
@@ -2190,7 +2468,7 @@ function renderChart() {
         data = labels.map(day => dailyMap[day] || 0);
     } else {
         labels = dayNames;
-        const weekMap = [0,0,0,0,0,0,0]; 
+        const weekMap = [0,0,0,0,0,0,0];
         historyData.forEach(h => {
             const dt = new Date(h.timestamp);
             if(dt.getMonth() === now.getMonth() && dt.getFullYear() === now.getFullYear()) {
@@ -2200,36 +2478,167 @@ function renderChart() {
         data = weekMap;
     }
 
+    // Build a vertical gradient fill for the line chart (and a soft tint for bars).
+    const canvas = document.getElementById('walkinChart');
+    const ctx = canvas.getContext('2d');
+    const lineGrad = ctx.createLinearGradient(0, 0, 0, 340);
+    lineGrad.addColorStop(0, 'rgba(0,168,168,0.45)');
+    lineGrad.addColorStop(0.5, 'rgba(0,168,168,0.18)');
+    lineGrad.addColorStop(1, 'rgba(0,168,168,0.02)');
+
+    const barGrad = ctx.createLinearGradient(0, 0, 0, 340);
+    barGrad.addColorStop(0, accent);
+    barGrad.addColorStop(1, primary);
+
+    // Highlight the busiest column / point in a warm accent for instant scanning.
+    const maxVal = Math.max(...data, 0);
+    const pointColors = data.map(v => (v === maxVal && maxVal > 0) ? '#f7971e' : primary);
+    const pointRadii  = data.map(v => (v === maxVal && maxVal > 0) ? 6 : 3);
+    const barColors   = data.map(v => (v === maxVal && maxVal > 0)
+        ? 'rgba(247,151,30,0.95)' : barGrad);
+
     if (walkinChart) walkinChart.destroy();
-    walkinChart = new Chart(document.getElementById('walkinChart'), {
+    walkinChart = new Chart(canvas, {
         type: type === 'line' ? 'line' : 'bar',
-        data: { 
-            labels: labels, 
-            datasets: [{ 
-                label: 'Visitors', 
-                data: data, 
-                borderColor: primary, 
-                backgroundColor: type === 'line' ? 'rgba(0,168,168,0.1)' : primary, 
-                fill: true, tension: 0.4, borderRadius: type === 'bar' ? 8 : 0,
-                pointBackgroundColor: primary, pointRadius: 4
-            }] 
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Visitors',
+                data: data,
+                borderColor: primary,
+                borderWidth: type === 'line' ? 3 : 0,
+                backgroundColor: type === 'line' ? lineGrad : barColors,
+                fill: type === 'line',
+                tension: 0.45,
+                borderRadius: type === 'bar' ? 10 : 0,
+                pointBackgroundColor: pointColors,
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: pointRadii,
+                pointHoverRadius: 8,
+                pointHoverBorderWidth: 3,
+                hoverBackgroundColor: type === 'bar' ? '#f7971e' : undefined
+            }]
         },
-        options: { 
-            responsive: true, maintainAspectRatio: false, 
-            plugins: { legend: { display: false } }, 
-            scales: { 
-                y: { beginAtZero: true, grid: { color: isDark ? '#1a2b2b' : '#f0f0f0' }, ticks: { stepSize: 1 } }, 
-                x: { grid: { display: false } } 
-            } 
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 700, easing: 'easeOutQuart' },
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: isDark ? 'rgba(15,26,26,0.96)' : 'rgba(26,42,42,0.96)',
+                    titleColor: '#fff',
+                    bodyColor: '#e0f2f2',
+                    borderColor: accent,
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 12,
+                    titleFont: { weight: '800', size: 13 },
+                    bodyFont: { weight: '700', size: 13 },
+                    displayColors: false,
+                    callbacks: {
+                        title: items => {
+                            const lbl = items[0].label;
+                            return type === 'line'
+                                ? `Day ${lbl} of ${now.toLocaleDateString('en-US', { month: 'long' })}`
+                                : `${lbl}`;
+                        },
+                        label: ctx => `  ${ctx.parsed.y} visitor${ctx.parsed.y === 1 ? '' : 's'}`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,102,102,0.08)',
+                        drawBorder: false
+                    },
+                    border: { display: false },
+                    ticks: {
+                        stepSize: Math.max(1, Math.ceil(maxVal / 5)),
+                        color: isDark ? '#7fb8b8' : '#557575',
+                        font: { weight: '600', size: 11 },
+                        padding: 8
+                    }
+                },
+                x: {
+                    grid: { display: false, drawBorder: false },
+                    border: { display: false },
+                    ticks: {
+                        color: isDark ? '#7fb8b8' : '#557575',
+                        font: { weight: '700', size: 11 }
+                    }
+                }
+            }
         }
     });
+
+    renderChartKpis(data, type);
+}
+
+// Small KPI strip above the chart — total, average, peak and trend vs prior period.
+function renderChartKpis(data, type) {
+    const kp = document.getElementById('chartKpis');
+    if (!kp) return;
+    if (!data || data.length === 0) { kp.innerHTML = ''; return; }
+
+    const total = data.reduce((a,b) => a + b, 0);
+    const nonZero = data.filter(v => v > 0).length || 1;
+    const avg = (total / nonZero).toFixed(1);
+    const peak = Math.max(...data, 0);
+    const peakIdx = data.indexOf(peak);
+
+    let peakLabel;
+    if (type === 'line') {
+        peakLabel = peak > 0 ? `Day ${peakIdx + 1}` : '—';
+    } else {
+        peakLabel = peak > 0 ? (dayNames[peakIdx] || '—') : '—';
+    }
+
+    // Trend: compare last third vs first third of the series (only meaningful for line view)
+    let deltaHtml = '';
+    if (type === 'line' && data.length >= 6) {
+        const slice = Math.floor(data.length / 3);
+        const first = data.slice(0, slice).reduce((a,b)=>a+b,0) / slice;
+        const last  = data.slice(-slice).reduce((a,b)=>a+b,0) / slice;
+        if (first > 0 || last > 0) {
+            const pct = first === 0 ? 100 : Math.round(((last - first) / first) * 100);
+            const cls = pct > 3 ? 'up' : pct < -3 ? 'down' : 'flat';
+            const arrow = pct > 3 ? '▲' : pct < -3 ? '▼' : '▬';
+            deltaHtml = `<span class="chart-kpi"><span class="ck-label">Trend</span>
+                <span class="ck-delta ${cls}">${arrow} ${Math.abs(pct)}%</span></span>`;
+        }
+    }
+
+    kp.innerHTML = `
+        <span class="chart-kpi"><span class="ck-label">Total</span><span class="ck-val">${total}</span></span>
+        <span class="chart-kpi"><span class="ck-label">Avg / active ${type === 'line' ? 'day' : 'weekday'}</span><span class="ck-val">${avg}</span></span>
+        <span class="chart-kpi"><span class="ck-label">Peak</span><span class="ck-val">${peak}</span><span class="ck-label">· ${peakLabel}</span></span>
+        ${deltaHtml}
+    `;
 }
 
 function updateDateTime(){
     const now = new Date();
     document.getElementById('day').innerText = now.toLocaleDateString('en-US', { weekday: 'long' });
     document.getElementById('date').innerText = now.toLocaleDateString('en-GB');
-    document.getElementById('time').innerText = now.toLocaleTimeString([], { hour12: false });
+
+    // Split-digit clock: HH : MM with seconds shown as a small accent chip.
+    // Falls back gracefully if the new split spans don't exist (older markup).
+    const pad = n => (n < 10 ? "0" + n : "" + n);
+    const hEl = document.getElementById('time-h');
+    const mEl = document.getElementById('time-m');
+    const sEl = document.getElementById('time-s');
+    if (hEl && mEl && sEl) {
+        hEl.innerText = pad(now.getHours());
+        mEl.innerText = pad(now.getMinutes());
+        sEl.innerText = pad(now.getSeconds());
+    } else {
+        document.getElementById('time').innerText =
+            now.toLocaleTimeString([], { hour12: false });
+    }
 }
 setInterval(updateDateTime, 1000);
 
@@ -2421,7 +2830,7 @@ function exportData() {
     const ws = XLSX.utils.aoa_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Walkins");
-    XLSX.writeFile(wb, `SZR_Report_${s}_to_${e}.xlsx`);
+    XLSX.writeFile(wb, `SheikhZayed_Report_${s}_to_${e}.xlsx`);
 }
 
 // Expose handlers used from inline onclick attributes
