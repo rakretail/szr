@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +59,7 @@
             --card-bg: #ffffff;
             --text-main: #1a2a2a;
             --rak-text: #1a2a2a;
-            --fujairah-color: #1a2a2a; 
+            --Sheikh Zayed-color: #1a2a2a; 
             --shadow-soft: 0 10px 30px rgba(0, 102, 102, 0.08);
         }
         body.dark {
@@ -69,7 +68,7 @@
             --text-main: #e0f2f2;
             --rak-text: #ffffff;
             --primary: #00a8a8;
-            --fujairah-color: #ffffff; 
+            --Sheikh Zayed-color: #ffffff; 
         }
         body { 
             font-family: 'Poppins', sans-serif;
@@ -102,7 +101,7 @@
             font-size: 2.4rem; 
             font-weight: 800;
             margin: 10px 0;
-            color: var(--fujairah-color); 
+            color: var(--Sheikh Zayed-color); 
             letter-spacing: -1.5px;
         }
         .bulletin-board {
@@ -206,19 +205,294 @@
         }
         #time { font-size: clamp(2.5rem, 8vw, 3.5rem); font-weight: 800; color: var(--primary); margin: 0; letter-spacing: -1px; }
         #date-info { font-size: 1.1rem; opacity: 0.8; font-weight: 500; margin-bottom: 15px; }
+        /* ============================================================
+           ENHANCED: Peak Activity card — gradient hero look with
+           primary window, sub-metrics, and a busiest day-of-week badge.
+           ============================================================ */
+        /* Side-by-side row containing Peak Activity + Monthly Leaderboard. */
+        .peak-and-board {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+            align-items: stretch;
+        }
+        @media (max-width: 820px) {
+            .peak-and-board { grid-template-columns: 1fr; }
+        }
+
+        /* Compact horizontal banner: icon + text on the left, meta pills on the right.
+           Drops the centered hero look — no wasted side gutters, ~40% less height. */
         .peak-card {
-            background: var(--card-bg); padding: 15px; border-radius: 20px;
-            box-shadow: var(--shadow-soft); border-left: 5px solid var(--primary);
-            border-right: 5px solid var(--primary); text-align: center; width: 100%; max-width: 320px; margin: 0 auto 20px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(120deg, #004d4d 0%, #006666 40%, #00897b 75%, #00b894 100%);
+            background-size: 220% 220%;
+            animation: peak-shimmer 18s ease infinite;
+            color: #ffffff;
+            padding: 14px 18px;
+            border-radius: 18px;
+            box-shadow: 0 10px 26px rgba(0,102,102,0.28), inset 0 1px 0 rgba(255,255,255,0.18);
+            width: 100%;
+            margin: 0;
             box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
         }
-        .totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .peak-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 12% 0%, rgba(255,255,255,0.22), transparent 50%),
+                        radial-gradient(circle at 95% 100%, rgba(0,255,212,0.22), transparent 55%);
+            pointer-events: none;
+        }
+        @keyframes peak-shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .peak-card .peak-left {
+            display: flex; align-items: center; gap: 14px;
+            position: relative; z-index: 2;
+            flex: 1 1 280px; min-width: 0;
+        }
+        .peak-card .peak-icon-circle {
+            width: 46px; height: 46px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.28);
+            font-size: 1.4rem; flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.25);
+            backdrop-filter: blur(4px);
+        }
+        .peak-card .peak-text { min-width: 0; }
+        .peak-card .peak-head-tag {
+            display: inline-block;
+            font-size: 0.62rem; font-weight: 800; letter-spacing: 1.6px;
+            text-transform: uppercase; opacity: 0.85;
+            background: rgba(0,0,0,0.22);
+            padding: 3px 10px; border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 4px;
+        }
+        .peak-card .peak-window {
+            font-size: clamp(1.05rem, 3vw, 1.45rem);
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.22);
+            line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .peak-card .peak-sub {
+            font-size: 0.74rem; font-weight: 600; opacity: 0.88;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .peak-card .peak-meta {
+            display: flex; flex-wrap: wrap; justify-content: flex-end;
+            gap: 6px;
+            position: relative; z-index: 2;
+            flex: 0 1 auto;
+        }
+        .peak-card .peak-pill {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.22);
+            padding: 5px 10px; border-radius: 999px;
+            font-size: 0.72rem; font-weight: 700;
+            backdrop-filter: blur(6px);
+            white-space: nowrap;
+        }
+        .peak-card .peak-pill strong { font-weight: 800; letter-spacing: 0.3px; }
+        @media (max-width: 560px) {
+            .peak-card { padding: 12px 14px; gap: 10px; }
+            .peak-card .peak-meta { justify-content: flex-start; width: 100%; }
+            .peak-card .peak-window { white-space: normal; }
+        }
+
+        /* ============================================================
+           Monthly Leaderboard — ranks executives by this month's
+           walk-ins with medals + trend vs last month.
+           ============================================================ */
+        .leaderboard-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 14px 16px 12px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(0,102,102,0.08);
+            margin: 0;
+            display: flex; flex-direction: column;
+            min-width: 0;
+        }
+        .leaderboard-head {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 10px; gap: 10px; flex-wrap: wrap;
+        }
+        .leaderboard-list {
+            position: relative;
+            transition: opacity 0.35s ease;
+            flex: 1 1 auto;
+        }
+        .leaderboard-list.is-fading { opacity: 0; }
+        .lb-pages {
+            display: flex; justify-content: center; gap: 6px;
+            margin-top: 10px; min-height: 8px;
+        }
+        .lb-pages span {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: rgba(0,102,102,0.18);
+            transition: background 0.25s ease, transform 0.25s ease;
+        }
+        .lb-pages span.active {
+            background: var(--primary);
+            transform: scale(1.25);
+        }
+        body.dark .lb-pages span { background: rgba(255,255,255,0.18); }
+        .leaderboard-title {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 1rem; font-weight: 800;
+            color: var(--primary);
+        }
+        .leaderboard-title .lb-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 30px; height: 30px; border-radius: 10px;
+            background: linear-gradient(135deg, #f7971e, #ffd86b);
+            color: #fff; font-size: 0.95rem;
+            box-shadow: 0 6px 14px rgba(247,151,30,0.35);
+        }
+        .leaderboard-sub {
+            font-size: 0.72rem; opacity: 0.6; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .lb-rows { display: flex; flex-direction: column; gap: 6px; }
+        .lb-row {
+            display: grid;
+            grid-template-columns: 30px minmax(0, 1fr) auto auto;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 10px;
+            border-radius: 12px;
+            background: rgba(0,102,102,0.04);
+            border: 1px solid rgba(0,102,102,0.06);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .lb-row:hover { transform: translateX(2px); box-shadow: 0 6px 14px rgba(0,102,102,0.12); }
+        .lb-row.is-me { background: rgba(0,168,168,0.10); border-color: rgba(0,168,168,0.30); }
+        .lb-rank {
+            display: flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 9px;
+            font-weight: 800; font-size: 0.82rem;
+            background: rgba(0,102,102,0.10); color: var(--primary);
+        }
+        .lb-rank.is-1 { background: linear-gradient(135deg, #ffd86b, #f7971e); color: #fff; box-shadow: 0 4px 10px rgba(247,151,30,0.35); font-size: 1rem; }
+        .lb-rank.is-2 { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #fff; box-shadow: 0 4px 10px rgba(148,163,184,0.35); font-size: 1rem; }
+        .lb-rank.is-3 { background: linear-gradient(135deg, #f4a978, #c0703a); color: #fff; box-shadow: 0 4px 10px rgba(192,112,58,0.35); font-size: 1rem; }
+        .lb-name {
+            font-weight: 700; font-size: 0.92rem;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .lb-name .you-tag {
+            display: inline-block; margin-left: 6px;
+            font-size: 0.6rem; font-weight: 800; letter-spacing: 1px;
+            color: var(--primary); background: rgba(0,168,168,0.15);
+            padding: 2px 6px; border-radius: 6px; text-transform: uppercase;
+            vertical-align: middle;
+        }
+        .lb-count {
+            font-weight: 800; font-size: 1.05rem; color: var(--primary);
+            min-width: 36px; text-align: right;
+        }
+        .lb-trend {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 9px; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 800;
+            min-width: 56px; justify-content: center;
+        }
+        .lb-trend.up   { background: rgba(0,196,106,0.14); color: #00925a; }
+        .lb-trend.down { background: rgba(255,71,87,0.14);  color: #d8344a; }
+        .lb-trend.flat { background: rgba(120,120,120,0.12); color: #6b7280; }
+        .lb-empty {
+            text-align: center; padding: 22px 10px;
+            opacity: 0.55; font-size: 0.85rem; font-weight: 600;
+        }
+        body.dark .leaderboard-card { border-color: rgba(255,255,255,0.06); }
+        body.dark .lb-row { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.06); }
+        body.dark .lb-row.is-me { background: rgba(0,168,168,0.18); border-color: rgba(0,168,168,0.40); }
+
+        /* ============================================================
+           ENHANCED: Daily / Weekly / Monthly stat cards.
+           Each gets its own accent color, icon, and animated number.
+           ============================================================ */
+        .totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
         .stat-card { 
-            background: var(--card-bg); padding: 20px 10px; border-radius: 25px; text-align: center; 
-            box-shadow: var(--shadow-soft); border-bottom: 6px solid var(--primary); border-top: 6px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+            background: var(--card-bg);
+            padding: 20px 14px 18px;
+            border-radius: 24px;
+            text-align: center; 
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(0,102,102,0.08);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-        .stat-card h3 { font-size: 0.9rem; margin: 0 0 5px 0; }
-        .stat-card span { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(0,102,102,0.18); }
+        .stat-card::before {
+            content: '';
+            position: absolute; left: 0; right: 0; top: 0;
+            height: 5px;
+            background: var(--accent-grad, linear-gradient(90deg, var(--primary), var(--accent)));
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute; right: -30px; bottom: -30px;
+            width: 110px; height: 110px; border-radius: 50%;
+            background: var(--accent-grad, linear-gradient(135deg, rgba(0,102,102,0.12), rgba(0,210,210,0.08)));
+            opacity: 0.25;
+            pointer-events: none;
+        }
+        .stat-card .stat-icon-wrap {
+            width: 44px; height: 44px;
+            margin: 0 auto 10px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--accent-grad, linear-gradient(135deg, var(--primary), var(--accent)));
+            color: #ffffff; font-size: 1.15rem; font-weight: 800;
+            box-shadow: 0 8px 20px rgba(0,102,102,0.25);
+            position: relative; z-index: 1;
+        }
+        .stat-card h3 {
+            font-size: 0.72rem; margin: 0 0 4px 0;
+            font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+            opacity: 0.65;
+            position: relative; z-index: 1;
+        }
+        .stat-card .stat-num {
+            font-size: clamp(2rem, 5vw, 2.6rem); font-weight: 800;
+            color: var(--accent-color, var(--primary));
+            display: block;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            position: relative; z-index: 1;
+        }
+        .stat-card .stat-foot {
+            font-size: 0.68rem; font-weight: 700;
+            opacity: 0.55; text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 6px;
+            position: relative; z-index: 1;
+        }
+        .stat-card.daily   { --accent-color: #00897b; --accent-grad: linear-gradient(135deg, #00897b, #00d2c2); }
+        .stat-card.weekly  { --accent-color: #006666; --accent-grad: linear-gradient(135deg, #004d4d, #00a8a8); }
+        .stat-card.monthly { --accent-color: #f7971e; --accent-grad: linear-gradient(135deg, #f7971e, #ffd86b); }
+        body.dark .stat-card { border-color: rgba(255,255,255,0.06); }
         .executives { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 30px; }
         .card {
             background: var(--card-bg);
@@ -344,13 +618,106 @@
             opacity: 0.5; font-style: italic; font-size: 0.9rem;
         }
         .chart-wrapper { background: var(--card-bg); padding: 20px; border-radius: 35px; box-shadow: var(--shadow-soft); margin-bottom: 30px; height: 400px; }
+
+        /* ============================================================
+           Shift Heatmap — day-of-week × hour grid showing walk-in
+           intensity over the last 30 days. Helps managers spot every
+           busy/quiet pocket at a glance, not just the single peak hour.
+           ============================================================ */
+        .heatmap-card {
+            background: var(--card-bg);
+            padding: 22px 22px 18px;
+            border-radius: 28px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+        }
+        .heatmap-head {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+        }
+        .heatmap-title {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 1rem; font-weight: 800; color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .heatmap-title .hm-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 9px;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            color: white; font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(0,102,102,0.25);
+        }
+        .heatmap-sub { font-size: 0.78rem; opacity: 0.65; font-weight: 600; }
+        .heatmap-scroll { overflow-x: auto; padding-bottom: 6px; }
+        .heatmap-scroll::-webkit-scrollbar { height: 6px; }
+        .heatmap-scroll::-webkit-scrollbar-thumb { background: rgba(0,102,102,0.3); border-radius: 6px; }
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: 56px repeat(24, minmax(22px, 1fr));
+            gap: 3px;
+            min-width: 640px;
+        }
+        .heatmap-grid .hm-corner { }
+        .heatmap-grid .hm-hour-label,
+        .heatmap-grid .hm-day-label {
+            font-size: 0.65rem; font-weight: 700; opacity: 0.55;
+            display: flex; align-items: center; justify-content: center;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .heatmap-grid .hm-day-label {
+            justify-content: flex-start; padding-left: 4px;
+            font-size: 0.72rem; opacity: 0.75;
+        }
+        .heatmap-grid .hm-cell {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            min-height: 22px;
+            border-radius: 6px;
+            background: rgba(0,102,102,0.06);
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            cursor: default;
+        }
+        body.dark .heatmap-grid .hm-cell { background: rgba(255,255,255,0.04); }
+        .heatmap-grid .hm-cell[data-i="1"] { background: rgba(0,168,168,0.18); }
+        .heatmap-grid .hm-cell[data-i="2"] { background: rgba(0,168,168,0.32); }
+        .heatmap-grid .hm-cell[data-i="3"] { background: rgba(0,150,150,0.50); }
+        .heatmap-grid .hm-cell[data-i="4"] { background: rgba(0,124,124,0.72); }
+        .heatmap-grid .hm-cell[data-i="5"] {
+            background: linear-gradient(135deg, #006666, #f7971e);
+            box-shadow: 0 2px 8px rgba(247,151,30,0.35);
+        }
+        .heatmap-grid .hm-cell:hover {
+            transform: scale(1.18);
+            box-shadow: 0 4px 14px rgba(0,102,102,0.35);
+            z-index: 2;
+        }
+        .heatmap-legend {
+            display: flex; align-items: center; justify-content: flex-end;
+            gap: 8px; margin-top: 12px;
+            font-size: 0.7rem; font-weight: 700; opacity: 0.7;
+        }
+        .heatmap-legend .lg-bar {
+            display: inline-flex; gap: 3px;
+        }
+        .heatmap-legend .lg-bar span {
+            width: 14px; height: 14px; border-radius: 4px;
+        }
+        .heatmap-empty {
+            text-align: center; padding: 28px 10px;
+            opacity: 0.5; font-style: italic; font-size: 0.9rem;
+        }
         #adminPanel {
             position: fixed; right: -100%; top: 0; width: 100%; max-width: 400px; 
             height: 100vh; background: var(--card-bg); box-shadow: -20px 0 50px rgba(0,0,0,0.15);
             transition: 0.5s ease; z-index: 1000; padding: 25px; box-sizing: border-box;
         }
         #adminPanel.active { right: 0; }
-        .locked { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+        /* When a card is locked (Off Duty), dim it but keep the manager's
+           ACTIVE/OFF-DUTY toggle clickable so they can re-activate from the
+           card itself. Only the +/- counter controls become non-interactive. */
+        .locked { opacity: 0.7; filter: grayscale(0.5); }
+        .locked .controls { opacity: 0.4; pointer-events: none; }
         .locked-tag { color: #ff4757; font-size: 0.7rem; font-weight: 800; display: block; }
         .footer-export { 
             text-align: center; padding: 30px 15px; background: var(--card-bg); border-radius: 35px; 
@@ -590,20 +957,101 @@
         </div>
     </header>
 
-    <div class="peak-card">
-        <h4 style="margin:0; font-size:0.8rem; opacity:0.6; text-transform:uppercase;">Peak Activity (30D)</h4>
-        <div id="peak-hour-val" style="font-size:1.6rem; font-weight:800; color:var(--primary);">...</div>
+    <!-- ENHANCED: Peak Activity + Monthly Leaderboard side-by-side row.
+         Stacks on screens narrower than 820px. -->
+    <div class="peak-and-board">
+        <div class="peak-card">
+            <div class="peak-left">
+                <div class="peak-icon-circle">⚡</div>
+                <div class="peak-text">
+                    <span class="peak-head-tag">Peak Activity · Last 30 Days</span>
+                    <div class="peak-window" id="peak-hour-val">Analyzing...</div>
+                    <div class="peak-sub" id="peak-sub">Calculating busiest window from recent traffic</div>
+                </div>
+            </div>
+            <div class="peak-meta" id="peak-meta"></div>
+        </div>
+
+        <div class="leaderboard-card">
+            <div class="leaderboard-head">
+                <div class="leaderboard-title">
+                    <span class="lb-icon">🏅</span>
+                    <span>Monthly Leaderboard</span>
+                </div>
+                <div class="leaderboard-sub" id="lb-sub">This month vs last month</div>
+            </div>
+            <div class="leaderboard-list" id="leaderboardList">
+                <div class="lb-rows" id="leaderboardRows"></div>
+            </div>
+            <div class="lb-pages" id="leaderboardPages"></div>
+        </div>
     </div>
 
+    <!-- ENHANCED: Daily / Weekly / Monthly stat cards with icons + color accents -->
     <div class="totals">
-        <div class="stat-card"><h3>Daily</h3><span id="daily">0</span></div>
-        <div class="stat-card"><h3>Weekly</h3><span id="weekly">0</span></div>
-        <div class="stat-card"><h3>Monthly</h3><span id="monthly">0</span></div>
+        <div class="stat-card daily">
+            <div class="stat-icon-wrap">☀</div>
+            <h3>Daily</h3>
+            <span class="stat-num" id="daily">0</span>
+            <div class="stat-foot">Today's walk-ins</div>
+        </div>
+        <div class="stat-card weekly">
+            <div class="stat-icon-wrap">📅</div>
+            <h3>Weekly</h3>
+            <span class="stat-num" id="weekly">0</span>
+            <div class="stat-foot">This week so far</div>
+        </div>
+        <div class="stat-card monthly">
+            <div class="stat-icon-wrap">🏆</div>
+            <h3>Monthly</h3>
+            <span class="stat-num" id="monthly">0</span>
+            <div class="stat-foot">Month to date</div>
+        </div>
     </div>
 
     <div class="executives" id="grid"></div>
 
-    <!-- Manager-only activity log (hidden for executives) -->
+    <!-- Charts now appear directly under the executive grid (more important than the log) -->
+    <div class="chart-wrapper">
+        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin:0; font-weight: 700;">Traffic Trends</h3>
+            <select id="viewSelector" onchange="renderChart()" style="padding:8px; border-radius:10px; border:1px solid #ddd; font-family:inherit;">
+                <option value="line">Daily Trend (Line)</option>
+                <option value="bar">Day of Week Analysis (Bar)</option>
+            </select>
+        </div>
+        <canvas id="walkinChart"></canvas>
+    </div>
+
+    <!-- ENHANCED: Shift Heatmap — day-of-week × hour intensity grid.
+         Surfaces every busy/quiet pocket, not just the single peak hour. -->
+    <div class="heatmap-card">
+        <div class="heatmap-head">
+            <div class="heatmap-title">
+                <span class="hm-icon">⚡</span>
+                Shift Heatmap
+            </div>
+            <div class="heatmap-sub">Walk-in intensity by day &amp; hour · last 30 days</div>
+        </div>
+        <div class="heatmap-scroll">
+            <div class="heatmap-grid" id="heatmapGrid"></div>
+        </div>
+        <div class="heatmap-legend">
+            <span>Quiet</span>
+            <span class="lg-bar">
+                <span style="background:rgba(0,102,102,0.06);"></span>
+                <span style="background:rgba(0,168,168,0.18);"></span>
+                <span style="background:rgba(0,168,168,0.32);"></span>
+                <span style="background:rgba(0,150,150,0.50);"></span>
+                <span style="background:rgba(0,124,124,0.72);"></span>
+                <span style="background:linear-gradient(135deg,#006666,#f7971e);"></span>
+            </span>
+            <span>Peak</span>
+        </div>
+    </div>
+
+    <!-- Manager-only activity log (hidden for executives) — moved BELOW the chart
+         so the visual KPIs and trend chart get top priority. -->
     <div id="activityLog" style="display:none;">
         <div class="al-header">
             <div class="al-title">
@@ -617,17 +1065,6 @@
             </div>
         </div>
         <div class="al-list" id="al-list"></div>
-    </div>
-
-    <div class="chart-wrapper">
-        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="margin:0; font-weight: 700;">Traffic Trends</h3>
-            <select id="viewSelector" onchange="renderChart()" style="padding:8px; border-radius:10px; border:1px solid #ddd; font-family:inherit;">
-                <option value="line">Daily Trend (Line)</option>
-                <option value="bar">Day of Week Analysis (Bar)</option>
-            </select>
-        </div>
-        <canvas id="walkinChart"></canvas>
     </div>
 
     <div class="footer-export">
@@ -675,7 +1112,7 @@ let lockedUsers = {};
 let walkinChart;
 let historyData = [];
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const showroomLat = 25.1413, showroomLon = 55.2136, allowedRadiusKM = 1.2;
+const showroomLat = 25.1413, showroomLon = 55.2136, allowedRadiusKM = 1.0;
 
 // ================================================================
 //  NEW: AUTHENTICATION / PIN LAYER
@@ -1033,7 +1470,18 @@ function renderGrid() {
     const grid = document.getElementById("grid");
     const me = getCurrentExec();
     const manager = isManager();
-    grid.innerHTML = executives.map(name => {
+
+    // ============================================================
+    //  ENHANCED: Logged-in executive's card appears FIRST.
+    //  Managers continue to see the alphabetical order so they can
+    //  scan their team consistently.
+    // ============================================================
+    let displayExecs = [...executives];
+    if (!manager && me && displayExecs.includes(me)) {
+        displayExecs = [me, ...displayExecs.filter(n => n !== me)];
+    }
+
+    grid.innerHTML = displayExecs.map(name => {
         // ============================================================
         //  Permission rules per card
         //   - Manager: every card is editable (full control) AND
@@ -1108,10 +1556,15 @@ function syncWalkins() {
         document.getElementById("daily").innerText = d;
         document.getElementById("weekly").innerText = w;
         document.getElementById("monthly").innerText = m;
-        document.getElementById("peak-hour-val").innerText = calculatePeakHour(historyData);
-        
+
+        // ENHANCED: render the full peak-activity card (window + day-of-week +
+        // average + secondary peak) instead of just a single hour string.
+        renderPeakCard(calculatePeakAnalytics(historyData));
+
         updateInsights(counts, d);
         renderChart();
+        renderShiftHeatmap(historyData);
+        renderMonthlyLeaderboard(historyData);
         renderActivityLog();
     });
 }
@@ -1286,7 +1739,7 @@ function updateInsights(monthlyCounts, dailyTotal) {
     if (hour >= 12 && hour < 17) { greetIcon = "☀️"; greetWord = "Good afternoon"; }
     else if (hour >= 17 && hour < 22) { greetIcon = "🌇"; greetWord = "Good evening"; }
     else if (hour >= 22 || hour < 5) { greetIcon = "🌙"; greetWord = "Late shift, legends"; }
-    messages.push(`${greetIcon} <span class="feed-pill blue">SZR TEAM</span> ${greetWord}, Sheikh Zayed Showroom — let's make today legendary!`);
+    messages.push(`${greetIcon} <span class="feed-pill blue">TEAM SHEIKH ZAYED</span> ${greetWord}, Sheikh Zayed Showroom — let's make today legendary!`);
 
     // ---------- Headline stats ----------
     if (dailyTotal > 0) {
@@ -1358,14 +1811,14 @@ function updateInsights(monthlyCounts, dailyTotal) {
         `💬 "People don't buy for logical reasons. They buy for emotional reasons." — Zig Ziglar`,
         `💬 "Begin by always expecting good things to happen." — Tom Hopkins`,
         `💬 "Treat objections as requests for further information." — Brian Tracy`,
-        `💬 "Today's walk-in is tomorrow's repeat customer." — SZR Floor Wisdom`,
+        `💬 "Today's walk-in is tomorrow's repeat customer." — Sheikh Zayed Floor Wisdom`,
         `💬 "A satisfied customer is the best business strategy of all." — Michael LeBoeuf`,
         `💬 "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time." — Thomas Edison`
     ];
     messages.push(`✨ ${quotes[Math.floor(Math.random() * quotes.length)]}`);
 
     // ---------- Manager wisdom (kept, lightly polished) ----------
-    const balkees = [
+    const BALKEES = [
         `🧠 <span class="feed-pill gold">BALKEES'S RULE</span> "If a customer smiles, they've basically bought a bathroom set." 🛁`,
         `☕ <span class="feed-pill gold">BALKEES SAYS</span> "The dashboard is green, but my tea is cold. More sales please!"`,
         `🪑 <span class="feed-pill gold">BALKEES SAYS</span> "If you have time to sit, you have time to sell."`,
@@ -1375,16 +1828,16 @@ function updateInsights(monthlyCounts, dailyTotal) {
         `🏠 <span class="feed-pill gold">BALKEES SAYS</span> "Don't show tiles… show them their dream home."`,
         `👃 <span class="feed-pill gold">BALKEES SENSES</span> "I can smell a big sale from the parking lot. Get ready!" 💰`
     ];
-    messages.push(balkees[Math.floor(Math.random() * balkees.length)]);
+    messages.push(BALKEES[Math.floor(Math.random() * BALKEES.length)]);
 
     // ---------- Milestones ----------
     const monthlyTotal = Object.values(monthlyCounts).reduce((a, b) => a + b, 0);
-    if (monthlyTotal >= 1000) messages.push(`🎉 <span class="feed-pill gold">LEGENDARY</span> Team SZR has crossed ${monthlyTotal} walk-ins this month! 🏅`);
+    if (monthlyTotal >= 1000) messages.push(`🎉 <span class="feed-pill gold">LEGENDARY</span> Team Sheikh Zayed has crossed ${monthlyTotal} walk-ins this month! 🏅`);
     else if (monthlyTotal >= 500) messages.push(`🎊 <span class="feed-pill green">MILESTONE</span> ${monthlyTotal} walk-ins this month — halfway to 1000! Push! 💥`);
     else if (monthlyTotal >= 100) messages.push(`🎈 <span class="feed-pill blue">CENTURY+</span> ${monthlyTotal} walk-ins logged this month. Onwards! 🚀`);
 
     // ---------- Closing flourish ----------
-    messages.push(`👩‍💻 👨‍💻 <span class="feed-pill green">TEAM SZR</span> Converting 'maybe' into 'invoice' — one smile at a time. 💚`);
+    messages.push(`👩‍💻  <span class="feed-pill green">Team Sheikh Zayed</span> Converting 'maybe' into 'invoice' — one smile at a time. 💚`);
 
     // Shuffle middle messages for variety, but keep greeting first and closing last
     const head = messages.slice(0, 1);
@@ -1394,16 +1847,328 @@ function updateInsights(monthlyCounts, dailyTotal) {
     insightEl.innerHTML = [...head, ...middle, ...tail].join(SEP) + SEP;
 }
 
-function calculatePeakHour(data) {
+// =====================================================================
+//  ENHANCED Peak Activity Analytics
+//  Returns:
+//    primary    — busiest hour window (e.g. "19:00 - 20:00")
+//    secondary  — second-busiest hour window
+//    busiestDay — day-of-week + hour combo (e.g. "Saturdays · 19:00")
+//    avgPerDay  — avg walk-ins during the peak hour, per day it occurred
+//    totalAtPeak — total walk-ins logged in the peak hour over 30 days
+//  Bucket size is 1 hour because retail shifts (and showroom staffing
+//  decisions) are made in roughly hour-long blocks. Pairing "busiest hour"
+//  with "busiest day-of-week + hour" gives both a daily staffing target
+//  and a weekly scheduling signal.
+// =====================================================================
+function fmtHourRange(h) {
+    const a = h < 10 ? '0' + h : '' + h;
+    const next = (h + 1) % 24;
+    const b = next < 10 ? '0' + next : '' + next;
+    return `${a}:00 – ${b}:00`;
+}
+
+function calculatePeakAnalytics(data) {
     const hourCounts = Array(24).fill(0);
-    const thirtyDaysAgo = Date.now() - (30*86400000);
-    data.forEach(e => { 
-        if(e.timestamp > thirtyDaysAgo && e.count > 0) 
-            hourCounts[new Date(e.timestamp).getHours()] += e.count; 
+    const dowHourCounts = Array.from({ length: 7 }, () => Array(24).fill(0));
+    // track unique calendar-days each hour was active (to compute avg/day)
+    const hourDays = Array.from({ length: 24 }, () => new Set());
+    const thirtyDaysAgo = Date.now() - (30 * 86400000);
+
+    data.forEach(e => {
+        if (!(e.timestamp > thirtyDaysAgo) || !(e.count > 0)) return;
+        const dt = new Date(e.timestamp);
+        const h = dt.getHours();
+        const dow = dt.getDay();
+        hourCounts[h] += e.count;
+        dowHourCounts[dow][h] += e.count;
+        hourDays[h].add(dt.toDateString());
     });
-    let maxHr = 0, maxV = 0;
-    hourCounts.forEach((v, h) => { if(v > maxV) { maxV = v; maxHr = h; } });
-    return maxV === 0 ? "No Data" : `${maxHr < 10 ? '0'+maxHr : maxHr}:00 - ${maxHr+1 < 10 ? '0'+(maxHr+1) : maxHr+1}:00`;
+
+    // Find primary + secondary peak hours
+    let p1 = -1, p2 = -1, v1 = 0, v2 = 0;
+    hourCounts.forEach((v, h) => {
+        if (v > v1) { v2 = v1; p2 = p1; v1 = v; p1 = h; }
+        else if (v > v2) { v2 = v; p2 = h; }
+    });
+
+    // Find busiest day-of-week + hour combo
+    let bestDow = -1, bestDowHour = -1, bestDowVal = 0;
+    for (let d = 0; d < 7; d++) {
+        for (let h = 0; h < 24; h++) {
+            if (dowHourCounts[d][h] > bestDowVal) {
+                bestDowVal = dowHourCounts[d][h]; bestDow = d; bestDowHour = h;
+            }
+        }
+    }
+
+    if (v1 === 0) {
+        return { primary: "No Data", secondary: null, busiestDay: null, avgPerDay: 0, totalAtPeak: 0 };
+    }
+
+    const dayCount = hourDays[p1].size || 1;
+    const avgPerDay = Math.round((v1 / dayCount) * 10) / 10;
+
+    return {
+        primary: fmtHourRange(p1),
+        secondary: v2 > 0 ? fmtHourRange(p2) : null,
+        busiestDay: bestDowVal > 0 ? `${dayNames[bestDow]}s · ${bestDowHour < 10 ? '0' + bestDowHour : bestDowHour}:00` : null,
+        avgPerDay: avgPerDay,
+        totalAtPeak: v1
+    };
+}
+
+// Backwards-compat wrapper (some legacy code paths may still call this).
+function calculatePeakHour(data) {
+    return calculatePeakAnalytics(data).primary;
+}
+
+// =====================================================================
+//  Monthly Leaderboard renderer (paginated + auto-rotating)
+//  Ranks every executive by walk-ins this calendar month with medals
+//  on the top three and a trend arrow vs their previous calendar month.
+//  Shows 3 names per page and auto-cycles every 8 seconds when there
+//  are more than 3 executives.
+// =====================================================================
+const LB_PAGE_SIZE = 3;
+const LB_ROTATE_MS = 8000;
+let _lbAllRows = [];
+let _lbPageIndex = 0;
+let _lbTimer = null;
+
+function _lbBuildRowHtml(r, absoluteRank, me) {
+    const rankCls = absoluteRank <= 3 ? `is-${absoluteRank}` : "";
+    const rankLabel = absoluteRank === 1 ? "🥇"
+                    : absoluteRank === 2 ? "🥈"
+                    : absoluteRank === 3 ? "🥉"
+                    : absoluteRank;
+
+    // Trend vs last month
+    let trendCls, trendTxt;
+    if (r.previous === 0 && r.current === 0) {
+        trendCls = "flat"; trendTxt = "—";
+    } else if (r.previous === 0) {
+        trendCls = "up"; trendTxt = "▲ NEW";
+    } else if (r.current === 0) {
+        trendCls = "down"; trendTxt = "▼ 100%";
+    } else {
+        const pct = Math.round(((r.current - r.previous) / r.previous) * 100);
+        if (pct > 0)      { trendCls = "up";   trendTxt = `▲ ${pct}%`; }
+        else if (pct < 0) { trendCls = "down"; trendTxt = `▼ ${Math.abs(pct)}%`; }
+        else              { trendCls = "flat"; trendTxt = "—"; }
+    }
+
+    const isMe = me && r.name === me;
+    const youTag = isMe ? `<span class="you-tag">You</span>` : "";
+    const safeName = String(r.name).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    return `
+        <div class="lb-row ${isMe ? 'is-me' : ''}">
+            <div class="lb-rank ${rankCls}">${rankLabel}</div>
+            <div class="lb-name">${safeName}${youTag}</div>
+            <div class="lb-count">${r.current}</div>
+            <div class="lb-trend ${trendCls}" title="Last month: ${r.previous}">${trendTxt}</div>
+        </div>
+    `;
+}
+
+function _lbRenderPage(animate) {
+    const rowsEl = document.getElementById("leaderboardRows");
+    const listEl = document.getElementById("leaderboardList");
+    const pagesEl = document.getElementById("leaderboardPages");
+    if (!rowsEl) return;
+
+    const me = (typeof getCurrentExec === "function") ? getCurrentExec() : null;
+    const totalPages = Math.max(1, Math.ceil(_lbAllRows.length / LB_PAGE_SIZE));
+    if (_lbPageIndex >= totalPages) _lbPageIndex = 0;
+
+    const start = _lbPageIndex * LB_PAGE_SIZE;
+    const slice = _lbAllRows.slice(start, start + LB_PAGE_SIZE);
+
+    const paint = () => {
+        rowsEl.innerHTML = slice
+            .map((r, i) => _lbBuildRowHtml(r, start + i + 1, me))
+            .join('');
+
+        if (pagesEl) {
+            if (totalPages <= 1) {
+                pagesEl.innerHTML = '';
+            } else {
+                pagesEl.innerHTML = Array.from({ length: totalPages },
+                    (_, i) => `<span class="${i === _lbPageIndex ? 'active' : ''}"></span>`
+                ).join('');
+            }
+        }
+
+        if (listEl) {
+            // small delay so the browser registers the opacity:0 first
+            requestAnimationFrame(() => listEl.classList.remove("is-fading"));
+        }
+    };
+
+    if (animate && listEl) {
+        listEl.classList.add("is-fading");
+        setTimeout(paint, 320);
+    } else {
+        paint();
+    }
+}
+
+function _lbStopRotation() {
+    if (_lbTimer) {
+        clearInterval(_lbTimer);
+        _lbTimer = null;
+    }
+}
+
+function _lbStartRotation() {
+    _lbStopRotation();
+    const totalPages = Math.max(1, Math.ceil(_lbAllRows.length / LB_PAGE_SIZE));
+    if (totalPages <= 1) return;
+    _lbTimer = setInterval(() => {
+        _lbPageIndex = (_lbPageIndex + 1) % totalPages;
+        _lbRenderPage(true);
+    }, LB_ROTATE_MS);
+}
+
+function renderMonthlyLeaderboard(data) {
+    const sub = document.getElementById("lb-sub");
+    const rowsEl = document.getElementById("leaderboardRows");
+    if (!rowsEl) return;
+
+    const now = new Date();
+    const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime();
+
+    const thisMonth = {};
+    const lastMonth = {};
+    data.forEach(e => {
+        if (!e || !e.executive || !(e.count > 0) || !e.timestamp) return;
+        if (e.timestamp >= startOfThisMonth) {
+            thisMonth[e.executive] = (thisMonth[e.executive] || 0) + e.count;
+        } else if (e.timestamp >= startOfLastMonth) {
+            lastMonth[e.executive] = (lastMonth[e.executive] || 0) + e.count;
+        }
+    });
+
+    // Build rows for every known executive (so quiet users still appear).
+    _lbAllRows = (executives || []).map(name => ({
+        name,
+        current: thisMonth[name] || 0,
+        previous: lastMonth[name] || 0
+    }));
+
+    // Sort: highest current month first, then alphabetical for ties
+    _lbAllRows.sort((a, b) => (b.current - a.current) || a.name.localeCompare(b.name));
+
+    if (sub) {
+        const monthName = now.toLocaleString(undefined, { month: "long" });
+        sub.textContent = `${monthName} vs previous month`;
+    }
+
+    if (_lbAllRows.length === 0) {
+        rowsEl.innerHTML = `<div class="lb-empty">No executives yet</div>`;
+        const pagesEl = document.getElementById("leaderboardPages");
+        if (pagesEl) pagesEl.innerHTML = '';
+        _lbStopRotation();
+        return;
+    }
+
+    // Keep the current page if still valid; otherwise reset to top
+    const totalPages = Math.max(1, Math.ceil(_lbAllRows.length / LB_PAGE_SIZE));
+    if (_lbPageIndex >= totalPages) _lbPageIndex = 0;
+
+    _lbRenderPage(false);
+    _lbStartRotation();
+}
+
+// =====================================================================
+//  Shift Heatmap renderer
+//  Builds a 7-day × 24-hour grid from the last 30 days of walk-ins.
+//  Each cell's intensity is bucketed 0–5 against the busiest cell so
+//  the colour scale stays meaningful regardless of overall volume.
+// =====================================================================
+function renderShiftHeatmap(data) {
+    const grid = document.getElementById("heatmapGrid");
+    if (!grid) return;
+
+    const dowHourCounts = Array.from({ length: 7 }, () => Array(24).fill(0));
+    const thirtyDaysAgo = Date.now() - (30 * 86400000);
+    let maxVal = 0;
+
+    data.forEach(e => {
+        if (!(e.timestamp > thirtyDaysAgo) || !(e.count > 0)) return;
+        const dt = new Date(e.timestamp);
+        dowHourCounts[dt.getDay()][dt.getHours()] += e.count;
+        if (dowHourCounts[dt.getDay()][dt.getHours()] > maxVal) {
+            maxVal = dowHourCounts[dt.getDay()][dt.getHours()];
+        }
+    });
+
+    // Bucket a value 0–5 against the max for colour intensity
+    const bucketOf = (v) => {
+        if (v <= 0) return 0;
+        if (maxVal === 0) return 0;
+        const ratio = v / maxVal;
+        if (ratio >= 0.85) return 5;
+        if (ratio >= 0.65) return 4;
+        if (ratio >= 0.45) return 3;
+        if (ratio >= 0.25) return 2;
+        return 1;
+    };
+
+    const dayShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const cells = [];
+
+    // Header row: blank corner + 24 hour labels (only show every 3rd to keep tidy)
+    cells.push(`<div class="hm-corner"></div>`);
+    for (let h = 0; h < 24; h++) {
+        const lbl = (h % 3 === 0) ? (h < 10 ? "0" + h : "" + h) : "";
+        cells.push(`<div class="hm-hour-label">${lbl}</div>`);
+    }
+
+    // 7 day rows
+    for (let d = 0; d < 7; d++) {
+        cells.push(`<div class="hm-day-label">${dayShort[d]}</div>`);
+        for (let h = 0; h < 24; h++) {
+            const v = dowHourCounts[d][h];
+            const i = bucketOf(v);
+            const hh = h < 10 ? "0" + h : "" + h;
+            const tip = v > 0
+                ? `${dayNames[d]} ${hh}:00 · ${v} walk-in${v === 1 ? '' : 's'}`
+                : `${dayNames[d]} ${hh}:00 · no walk-ins`;
+            cells.push(`<div class="hm-cell" data-i="${i}" title="${tip}"></div>`);
+        }
+    }
+
+    grid.innerHTML = cells.join('');
+}
+
+// Render the enhanced peak card from analytics
+function renderPeakCard(analytics) {
+    const winEl = document.getElementById("peak-hour-val");
+    const subEl = document.getElementById("peak-sub");
+    const metaEl = document.getElementById("peak-meta");
+    if (!winEl || !subEl || !metaEl) return;
+
+    if (analytics.primary === "No Data") {
+        winEl.innerText = "No Data Yet";
+        subEl.innerText = "Peak window appears once walk-ins are logged";
+        metaEl.innerHTML = "";
+        return;
+    }
+
+    winEl.innerText = analytics.primary;
+    subEl.innerText = analytics.busiestDay
+        ? `Busiest weekly slot: ${analytics.busiestDay}`
+        : `Based on the last 30 days of walk-ins`;
+
+    const pills = [];
+    pills.push(`<span class="peak-pill">📊 <strong>${analytics.totalAtPeak}</strong> walk-ins in this hour (30D)</span>`);
+    pills.push(`<span class="peak-pill">📈 Avg <strong>${analytics.avgPerDay}</strong> / day at peak</span>`);
+    if (analytics.secondary) {
+        pills.push(`<span class="peak-pill">🥈 Next busiest: <strong>${analytics.secondary}</strong></span>`);
+    }
+    metaEl.innerHTML = pills.join('');
 }
 
 function renderChart() {
@@ -1496,15 +2261,20 @@ function openAdmin() {
 function closeAdmin() { document.getElementById("adminPanel").classList.remove("active"); }
 
 function renderAdmin() {
+    // ============================================================
+    //  ENHANCED: Admin panel is now strictly for ADD / REMOVE users.
+    //  The Active / Off-Duty toggle has been moved to each executive's
+    //  card in the main view (managers can switch it from there).
+    // ============================================================
     const list = document.getElementById("unifiedExecList");
     list.innerHTML = executives.map(name => {
         const locked = lockedUsers[name] || false;
+        const statusBadge = locked
+            ? `<span style="font-size:0.65rem; font-weight:800; color:#ff4757; background:rgba(255,71,87,0.1); padding:3px 9px; border-radius:999px; letter-spacing:0.5px;">OFF DUTY</span>`
+            : `<span style="font-size:0.65rem; font-weight:800; color:#00c46a; background:rgba(0,196,106,0.12); padding:3px 9px; border-radius:999px; letter-spacing:0.5px;">ACTIVE</span>`;
         return `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:rgba(0,102,102,0.05); padding:12px; border-radius:15px;">
-            <span style="font-weight:600;">${name}</span>
-            <div style="display:flex; gap:8px;">
-                <button onclick="toggleLock('${name}')" style="background:${locked ? '#ff4757' : '#006666'}; color:white; border:none; padding:6px 12px; border-radius:8px;">${locked ? 'LOCKED' : 'ACTIVE'}</button>
-                <button onclick="deleteExecutive('${name}')" style="background:rgba(255,71,87,0.1); color:#ff4757; border:none; padding:6px 12px; border-radius:8px;">Remove</button>
-            </div>
+            <span style="font-weight:600; display:flex; align-items:center; gap:10px;">${name} ${statusBadge}</span>
+            <button onclick="deleteExecutive('${name.replace(/'/g, "\\'")}')" style="background:rgba(255,71,87,0.1); color:#ff4757; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; font-family:inherit; font-weight:700;">Remove</button>
         </div>`;
     }).join('');
 
@@ -1651,7 +2421,7 @@ function exportData() {
     const ws = XLSX.utils.aoa_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Walkins");
-    XLSX.writeFile(wb, `Alain_Report_${s}_to_${e}.xlsx`);
+    XLSX.writeFile(wb, `SZR_Report_${s}_to_${e}.xlsx`);
 }
 
 // Expose handlers used from inline onclick attributes
@@ -1685,7 +2455,7 @@ window.setActivityFilter = setActivityFilter;
 </script>
 
 <footer style="text-align:center; padding:20px; color:#888; font-size:13px; background: var(--card-bg); border-radius: 0 0 35px 35px;"> 
-      © 2026 Hesper. All rights reserved.
+      © 2026 NK. All rights reserved.
 </footer>
 </body>
 </html>
