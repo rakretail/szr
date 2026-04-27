@@ -1,6 +1,6 @@
 {
-  "name": "Fujairah Showroom Tracker",
-  "short_name": "FujTracker",
+  "name": "Sheikh Zayed Showroom Tracker",
+  "short_name": "SZRTracker",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f2f7f7",
