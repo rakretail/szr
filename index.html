@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -214,7 +215,7 @@
             align-items: center;
             gap: 28px;
             width: 100%;
-            max-width: 720px;
+            max-width: 1325px;
             margin: 14px auto 22px;
             padding: 22px 36px;
             border-radius: 26px;
@@ -369,16 +370,47 @@
             0%   { background-position: 0% 50%; }
             100% { background-position: 200% 50%; }
         }
-        @media (max-width: 640px) {
+        @media (max-width: 900px) {
+            #datetime {
+                gap: 18px;
+                padding: 18px 22px;
+            }
+            #datetime::before { left: calc(33.333% - 6px); }
+            #datetime::after  { right: calc(33.333% - 6px); }
+        }
+        @media (max-width: 720px) {
             #datetime {
                 grid-template-columns: 1fr;
-                gap: 14px;
-                padding: 18px 22px;
+                gap: 12px;
+                padding: 18px 18px 22px;
                 text-align: center;
+                border-radius: 22px;
             }
             #datetime::before, #datetime::after { display: none; }
             .clk-day, .clk-date { text-align: center; }
             .clk-day .clk-eyebrow, .clk-date .clk-eyebrow { justify-content: center; }
+            #time {
+                font-size: clamp(2.4rem, 11vw, 3.4rem);
+                justify-content: center;
+                width: 100%;
+            }
+            #time .clk-sep { margin: 0 4px; }
+            #time .clk-sec {
+                font-size: 0.36em;
+                margin-left: 8px;
+                padding: 4px 8px;
+                border-radius: 8px;
+                background: rgba(0,168,168,0.12);
+            }
+            #day, #date { font-size: clamp(0.95rem, 3.6vw, 1.2rem); }
+            .clk-day .clk-eyebrow, .clk-date .clk-eyebrow {
+                font-size: 0.58rem; letter-spacing: 1.6px;
+            }
+        }
+        @media (max-width: 420px) {
+            #datetime { padding: 16px 14px 20px; gap: 8px; border-radius: 18px; }
+            #time { font-size: clamp(2rem, 12vw, 2.8rem); letter-spacing: -0.5px; }
+            #time .clk-sec { display: none; }
         }
         /* ============================================================
            ENHANCED: Peak Activity card — gradient hero look with
@@ -606,7 +638,111 @@
            ENHANCED: Daily / Weekly / Monthly stat cards.
            Each gets its own accent color, icon, and animated number.
            ============================================================ */
-        .totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+        .totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+        /* ============================================================
+           NEW: Compact Walk-in Comparison strip (Last Week / Last Month)
+           ============================================================ */
+        .compare-card {
+            background: var(--card-bg);
+            border-radius: 22px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(0,102,102,0.08);
+            padding: 14px 18px 12px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        body.dark .compare-card { border-color: rgba(255,255,255,0.06); }
+        .compare-card::before {
+            content: '';
+            position: absolute; left: 0; right: 0; top: 0; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), #00b894, var(--primary));
+            background-size: 200% 100%;
+            animation: chart-bar-shine 8s linear infinite;
+            opacity: 0.85;
+        }
+        .compare-head {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
+        }
+        .compare-title {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 0.82rem; font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .compare-title .cmp-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            color: #fff; font-size: 0.78rem;
+            box-shadow: 0 4px 10px rgba(0,102,102,0.25);
+        }
+        .compare-toggle {
+            display: inline-flex; gap: 4px;
+            background: rgba(0,102,102,0.06);
+            border: 1px solid rgba(0,168,168,0.18);
+            border-radius: 999px;
+            padding: 3px;
+        }
+        body.dark .compare-toggle {
+            background: rgba(0,210,210,0.08);
+            border-color: rgba(0,210,210,0.20);
+        }
+        .compare-toggle button {
+            background: transparent; border: none;
+            color: var(--text-main); opacity: 0.65;
+            font-family: inherit; font-weight: 800;
+            font-size: 0.7rem; letter-spacing: 0.6px;
+            text-transform: uppercase;
+            padding: 6px 14px; border-radius: 999px; cursor: pointer;
+            transition: background 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+        }
+        .compare-toggle button:hover { opacity: 1; }
+        .compare-toggle button.active {
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            color: #fff;
+            opacity: 1;
+            box-shadow: 0 4px 12px rgba(0,102,102,0.28);
+        }
+        .compare-summary {
+            display: flex; flex-wrap: wrap; align-items: center;
+            gap: 14px;
+            margin: 4px 0 8px;
+            font-size: 0.82rem;
+        }
+        .compare-summary .cmp-stat {
+            display: inline-flex; align-items: baseline; gap: 6px;
+        }
+        .compare-summary .cmp-dot {
+            display: inline-block; width: 10px; height: 10px;
+            border-radius: 50%; margin-right: 4px;
+            transform: translateY(1px);
+        }
+        .compare-summary .cmp-dot.curr { background: var(--primary); }
+        .compare-summary .cmp-dot.prev { background: rgba(120,120,120,0.55); }
+        .compare-summary .cmp-label { opacity: 0.7; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .compare-summary .cmp-val { font-weight: 800; color: var(--primary); font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+        .compare-summary .cmp-delta {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 9px; border-radius: 999px;
+            font-size: 0.72rem; font-weight: 800;
+            margin-left: auto;
+        }
+        .compare-summary .cmp-delta.up   { background: rgba(0,184,148,0.16); color: #00925a; }
+        .compare-summary .cmp-delta.down { background: rgba(255,71,87,0.14);  color: #d8344a; }
+        .compare-summary .cmp-delta.flat { background: rgba(120,120,120,0.14); color: #6b7280; }
+        .compare-canvas-wrap {
+            position: relative;
+            height: 110px;
+            width: 100%;
+        }
+        @media (max-width: 480px) {
+            .compare-card { padding: 12px 14px 10px; }
+            .compare-summary { gap: 10px; font-size: 0.78rem; }
+            .compare-summary .cmp-delta { margin-left: 0; }
+            .compare-canvas-wrap { height: 96px; }
+        }
         .stat-card { 
             position: relative;
             overflow: hidden;
@@ -1006,13 +1142,21 @@
            are centered, the EXPORT button stretches the full width of
            the panel for a clear, kiosk-friendly tap target.
            ============================================================ */
+       /* Updated Export Container — Full width & Responsive */
         .footer-export {
-            text-align: center; padding: 28px 26px 26px;
-            background: var(--card-bg); border-radius: 28px;
-            box-shadow: var(--shadow-soft); margin-bottom: 40px;
+            text-align: center; 
+            padding: 16px; /* Reduced vertical padding for a smaller height */
+            background: var(--card-bg); 
+            border-radius: 22px;
+            box-shadow: var(--shadow-soft); 
+            margin: 0 auto 40px;
             border-left: 5px solid var(--primary);
-            position: relative; overflow: hidden;
+            position: relative; 
+            overflow: hidden;
+            max-width: 100%; /* Matches the page width */
+            box-sizing: border-box; /* Ensures padding doesn't push it off-screen */
         }
+
         .footer-export::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, var(--primary), var(--accent), #00b894, var(--primary));
@@ -1020,104 +1164,201 @@
             animation: chart-bar-shine 8s linear infinite;
             opacity: 0.85;
         }
+
         .footer-export .fe-title {
-            margin: 0; font-size: 1rem; font-weight: 800;
+            margin: 0; font-size: 0.95rem; font-weight: 800;
             color: var(--primary);
             text-transform: uppercase; letter-spacing: 0.5px;
             display: inline-flex; align-items: center; gap: 10px;
         }
+
         .footer-export .fe-title .fe-icon {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 32px; height: 32px; border-radius: 10px;
+            width: 28px; height: 28px; border-radius: 8px; /* Slightly smaller icon */
             background: linear-gradient(135deg, var(--primary), #00b894);
-            color: #fff; font-size: 1rem;
+            color: #fff; font-size: 0.9rem;
             box-shadow: 0 4px 14px rgba(0,102,102,0.28);
         }
+
         .footer-export .fe-sub {
-            margin: 6px 0 18px; font-size: 0.85rem;
+            margin: 4px 0 14px; font-size: 0.8rem;
             opacity: 0.65; font-weight: 600;
         }
+
+        /* Responsive Range Container */
         .footer-export .fe-range {
-            display: inline-flex; align-items: center; flex-wrap: wrap;
-            gap: 12px; margin-bottom: 18px;
-            padding: 12px 16px; border-radius: 16px;
+            display: flex; /* Changed from inline-flex to flex */
+            align-items: center; 
+            justify-content: center;
+            flex-wrap: wrap; /* Allows wrapping on mobile */
+            gap: 12px; 
+            margin-bottom: 16px;
+            padding: 10px 14px; 
+            border-radius: 16px;
             background: rgba(0,168,168,0.06);
             border: 1px solid rgba(0,168,168,0.18);
         }
+
         body.dark .footer-export .fe-range {
             background: rgba(0,210,210,0.08);
             border-color: rgba(0,210,210,0.20);
         }
+
         .footer-export .fe-field {
             display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px;
-            font-size: 0.7rem; font-weight: 800;
+            font-size: 0.65rem; font-weight: 800;
             text-transform: uppercase; letter-spacing: 1.2px;
             color: var(--primary); opacity: 0.75;
+            flex: 1; /* Allows inputs to grow equally */
+            min-width: 140px; /* Prevents inputs from getting too squished */
         }
+
         .footer-export .fe-field input {
-            padding: 10px 14px; border-radius: 10px;
+            width: 100%; /* Fixes input to field width */
+            padding: 8px 12px; /* Smaller height */
+            border-radius: 10px;
             border: 1px solid rgba(0,168,168,0.25);
             background: var(--card-bg); color: var(--text-main);
-            font-family: inherit; font-weight: 700; font-size: 0.9rem;
-            min-width: 160px;
+            font-family: inherit; font-weight: 700; font-size: 0.85rem;
+            box-sizing: border-box;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
+
         .footer-export .fe-field input:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(0,168,168,0.18);
         }
+
         .footer-export .fe-arrow {
-            font-size: 1.2rem; font-weight: 800;
+            font-size: 1rem; font-weight: 800;
             color: var(--primary); opacity: 0.55;
         }
-        /* Full-width EXPORT button — aligned with the page card width */
+
+        /* Full-Width Responsive Button */
         .footer-export .fe-export-btn {
-            display: inline-flex; align-items: center; justify-content: center;
+            display: flex; /* Full width behavior */
+            align-items: center; 
+            justify-content: center;
             gap: 10px;
-            width: 100%;
-            padding: 16px 24px;
+            width: 100%; /* Matches parent width */
+            max-width: 100%; /* Removed the 360px cap */
+            padding: 12px 20px; /* Reduced height */
             background: linear-gradient(135deg, var(--primary) 0%, #00897b 50%, #00b894 100%);
             background-size: 200% 200%;
             color: #fff;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
             font-family: inherit;
             font-weight: 800;
-            font-size: 0.95rem;
-            letter-spacing: 1.5px;
+            font-size: 0.9rem;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
-            box-shadow: 0 10px 24px rgba(0,102,102,0.28),
+            box-shadow: 0 8px 20px rgba(0,102,102,0.2),
                         inset 0 1px 0 rgba(255,255,255,0.18);
             transition: transform 0.18s ease, box-shadow 0.18s ease, background-position 0.4s ease;
         }
+
+        /* Mobile specific adjustment for the arrow */
+        @media (max-width: 480px) {
+            .footer-export .fe-arrow {
+                display: none; /* Hide arrow on very small screens to save space */
+            }
+            .footer-export .fe-field {
+                width: 100%;
+            }
+        }
+
         .footer-export .fe-export-btn:hover {
             transform: translateY(-2px);
             background-position: 100% 100%;
-            box-shadow: 0 16px 32px rgba(0,102,102,0.36),
+            box-shadow: 0 12px 24px rgba(0,102,102,0.3),
                         inset 0 1px 0 rgba(255,255,255,0.25);
         }
+
         .footer-export .fe-export-btn:active {
             transform: translateY(0);
         }
+
         .footer-export .fe-export-btn .fe-export-ic {
-            font-size: 1.1rem;
+            font-size: 1rem;
+        }
+        @media (max-width: 1024px) {
+            .container { max-width: 100%; }
+            .executives { grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); }
+            .chart-canvas-wrap { height: 300px; }
         }
         @media (max-width: 768px) {
-            .szr-left { position: static; font-size: 2rem; margin-bottom: -10px; }
-            .top-controls { position: static; margin-bottom: 15px; }
-            .showroom-title { font-size: 1.8rem; }
-            .totals { grid-template-columns: 1fr; }
-            .stat-card { padding: 15px; }
-            .executives { grid-template-columns: 1fr 1fr; }
+            body { padding: 12px; }
+            header { display: flex; flex-direction: column; align-items: center; padding-top: 0; }
+            .szr-left { position: static; font-size: 1.8rem; margin: 0 0 4px; align-self: flex-start; }
+            .top-controls { position: static; margin: 0 0 12px; align-self: flex-end; }
+            .showroom-title { font-size: 1.6rem; margin: 4px 0 8px; }
+            .bulletin-board { padding: 10px 12px; border-radius: 14px; }
+            .bulletin-label { font-size: 0.62rem; padding: 5px 10px; margin-right: 8px; }
+            #smart-insight { font-size: 0.92rem; }
+            .totals { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .stat-card { padding: 14px 8px 12px; border-radius: 18px; }
+            .stat-card .stat-icon-wrap { width: 36px; height: 36px; font-size: 1rem; margin-bottom: 6px; }
+            .stat-card h3 { font-size: 0.62rem; letter-spacing: 1px; }
+            .stat-card .stat-num { font-size: clamp(1.4rem, 5vw, 2rem); }
+            .stat-card .stat-foot { font-size: 0.58rem; letter-spacing: 0.4px; }
+            .executives { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .card { padding: 14px 10px 10px; border-radius: 20px; min-height: 150px; }
+            .card h3 { font-size: 0.92rem; height: 2.2em; }
+            .controls { padding: 6px; }
+            .controls button { width: 36px; height: 36px; font-size: 1.2rem; }
+            .controls .count { font-size: 1.2rem; }
+            .chart-wrapper { padding: 16px 14px 14px; border-radius: 20px; }
+            .chart-canvas-wrap { height: 260px; }
+            .chart-head { gap: 8px; margin-bottom: 10px; }
+            .chart-title { font-size: 0.85rem; }
+            .chart-title .ct-icon { width: 28px; height: 28px; font-size: 0.85rem; }
+            .heatmap-card { padding: 16px 14px 14px; border-radius: 20px; }
+            .heatmap-grid { grid-template-columns: 44px repeat(17, minmax(28px, 1fr)); gap: 3px; min-width: 560px; }
+            .heatmap-grid .hm-cell { height: 28px; border-radius: 6px; }
+            .footer-export { padding: 18px 16px; border-radius: 18px; }
+            .footer-export .fe-title { font-size: 0.88rem; }
+            .footer-export .fe-sub { font-size: 0.78rem; margin-bottom: 14px; }
+            .footer-export .fe-range { padding: 10px 12px; gap: 10px; width: 100%; box-sizing: border-box; }
+            .footer-export .fe-field { flex: 1; min-width: 0; }
+            .footer-export .fe-field input { min-width: 0; width: 100%; box-sizing: border-box; font-size: 0.85rem; padding: 9px 10px; }
+            .footer-export .fe-arrow { display: none; }
+            .session-bar { flex-wrap: wrap; gap: 8px; padding: 14px; }
+            .session-bar .who { flex: 1 1 100%; text-align: center; font-size: 0.82rem; }
+            .session-bar button { padding: 9px 14px; font-size: 0.78rem; flex: 1; }
+            .peak-and-board { gap: 12px; margin-bottom: 16px; }
+            .leaderboard-card { padding: 12px 14px 10px; border-radius: 18px; }
+            .lb-row { padding: 6px 8px; gap: 8px; grid-template-columns: 26px minmax(0, 1fr) auto auto; }
+            .lb-rank { width: 24px; height: 24px; font-size: 0.75rem; }
+            .lb-name { font-size: 0.85rem; }
+            .lb-count { font-size: 0.95rem; min-width: 28px; }
+            .lb-trend { font-size: 0.62rem; padding: 3px 7px; min-width: 48px; }
+            .compare-card { padding: 12px 14px 10px; border-radius: 18px; }
+            .compare-canvas-wrap { height: 100px; }
         }
         @media (max-width: 480px) {
             body { padding: 10px; }
+            .executives { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .totals { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .stat-card { padding: 12px 6px 10px; border-radius: 16px; }
+            .stat-card .stat-icon-wrap { width: 30px; height: 30px; font-size: 0.85rem; margin-bottom: 4px; }
+            .stat-card h3 { font-size: 0.55rem; }
+            .stat-card .stat-num { font-size: 1.3rem; }
+            .stat-card .stat-foot { display: none; }
+            .footer-export .fe-export-btn { width: 100%; min-width: 0; max-width: 100%; margin: 10px 0 0 0; }
+            .footer-export .fe-field input { width: 100%; min-width: 0; }
+            .footer-export .fe-field { width: 100%; }
+            .footer-export .fe-range { width: 100%; box-sizing: border-box; flex-direction: column; align-items: stretch; }
+            .compare-summary { font-size: 0.75rem; }
+            .compare-summary .cmp-val { font-size: 0.95rem; }
+            .compare-toggle button { font-size: 0.62rem; padding: 5px 10px; letter-spacing: 0.4px; }
+        }
+        @media (max-width: 360px) {
             .executives { grid-template-columns: 1fr; }
-            .footer-export button { width: 100%; margin: 10px 0 0 0; }
-            .footer-export input { width: 40%; }
-            #time { font-size: 3rem; }
+            .totals { grid-template-columns: 1fr 1fr; }
+            .totals .stat-card.monthly { grid-column: span 2; }
         }
 
         /* ============================================================
@@ -1398,6 +1639,24 @@
         </div>
     </div>
 
+    <!-- NEW: Walk-in comparison strip — Last 7 days vs prior 7 days, or Last 30 vs prior 30. -->
+    <div class="compare-card">
+        <div class="compare-head">
+            <div class="compare-title">
+                <span class="cmp-icon">↺</span>
+                <span>Walk-ins Comparison</span>
+            </div>
+            <div class="compare-toggle" id="compareToggle">
+                <button type="button" class="active" data-range="week" onclick="setCompareRange('week')">Last Week</button>
+                <button type="button" data-range="month" onclick="setCompareRange('month')">Last Month</button>
+            </div>
+        </div>
+        <div class="compare-summary" id="compareSummary"></div>
+        <div class="compare-canvas-wrap">
+            <canvas id="compareChart"></canvas>
+        </div>
+    </div>
+
     <div class="executives" id="grid"></div>
 
     <!-- Charts now appear directly under the executive grid (more important than the log) -->
@@ -1514,6 +1773,8 @@ let executives = [];
 let managers = []; // NEW: list of manager names
 let lockedUsers = {};
 let walkinChart;
+let compareChart;
+let compareRange = "week"; // "week" or "month"
 let historyData = [];
 const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const showroomLat = 25.1413, showroomLon = 55.2136, allowedRadiusKM = 1.0;
@@ -1654,7 +1915,7 @@ async function submitPin() {
     errEl.innerText = "";
 
     if (!/^\d{4}$/.test(pin)) {
-        errEl.innerText = "PIN must be exactly 4 digits.";
+        errEl.innerText = "PIN szrt be exactly 4 digits.";
         return;
     }
 
@@ -1754,7 +2015,7 @@ function logout() {
 
 function openChangePin() {
     if (!getCurrentExec()) {
-        alert("You must be logged in to change your PIN.");
+        alert("You szrt be logged in to change your PIN.");
         return;
     }
     document.getElementById("changePinExecName").innerText = getCurrentExec();
@@ -1782,7 +2043,7 @@ async function submitChangePin() {
     const confirmPin = (document.getElementById("confirmPinInput").value || "").trim();
 
     if (!/^\d{4}$/.test(current) || !/^\d{4}$/.test(next) || !/^\d{4}$/.test(confirmPin)) {
-        errEl.innerText = "All PINs must be exactly 4 digits.";
+        errEl.innerText = "All PINs szrt be exactly 4 digits.";
         return;
     }
     if (next !== confirmPin) {
@@ -1790,7 +2051,7 @@ async function submitChangePin() {
         return;
     }
     if (next === current) {
-        errEl.innerText = "New PIN must be different from current PIN.";
+        errEl.innerText = "New PIN szrt be different from current PIN.";
         return;
     }
 
@@ -1967,6 +2228,7 @@ function syncWalkins() {
 
         updateInsights(counts, d);
         renderChart();
+        renderCompareChart();
         renderShiftHeatmap(historyData);
         renderMonthlyLeaderboard(historyData);
         renderActivityLog();
@@ -2117,7 +2379,7 @@ function update(name, val) {
                     pin: loggedInPin
                 });
             } else {
-                alert(`Access Denied: You are ${dist.toFixed(2)}km away. You must be at Sheikh Zayed Showroom.`);
+                alert(`Access Denied: You are ${dist.toFixed(2)}km away. You szrt be at Sheikh Zayed Showroom.`);
             }
         }, 
         (err) => alert("Location Error: Please ensure GPS is ON and permission is granted."), 
@@ -2789,7 +3051,7 @@ function updateDateTime(){
 }
 setInterval(updateDateTime, 1000);
 
-function toggleDark(){ document.body.classList.toggle("dark"); setTimeout(renderChart, 50); }
+function toggleDark(){ document.body.classList.toggle("dark"); setTimeout(() => { renderChart(); renderCompareChart(); }, 50); }
 function toggleFullScreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }
 function openAdmin() {
     // ============================================================
@@ -2998,6 +3260,175 @@ window.addManager = addManager;
 window.deleteManager = deleteManager;
 window.toggleLock = toggleLock;
 window.update = update;
+// ================================================================
+//  NEW: Walk-in comparison chart — current period vs prior period.
+//  range = "week"  → last 7 days vs prior 7 days (daily totals)
+//  range = "month" → last 30 days vs prior 30 days (daily totals)
+// ================================================================
+function setCompareRange(range) {
+    if (range !== "week" && range !== "month") return;
+    compareRange = range;
+    document.querySelectorAll("#compareToggle button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.range === range);
+    });
+    renderCompareChart();
+}
+window.setCompareRange = setCompareRange;
+
+function buildComparisonSeries(range) {
+    const days = range === "month" ? 30 : 7;
+    // Anchor at end of today (local).
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    const msDay = 86400000;
+
+    const currStart = new Date(end.getTime() - days * msDay + 1);
+    currStart.setHours(0, 0, 0, 0);
+    const prevEnd = new Date(currStart.getTime() - 1);
+    const prevStart = new Date(prevEnd.getTime() - days * msDay + 1);
+    prevStart.setHours(0, 0, 0, 0);
+
+    const curr = new Array(days).fill(0);
+    const prev = new Array(days).fill(0);
+
+    historyData.forEach(h => {
+        const ts = h && h.timestamp;
+        if (!ts) return;
+        const c = +h.count || 0;
+        if (ts >= currStart.getTime() && ts <= end.getTime()) {
+            const idx = Math.floor((ts - currStart.getTime()) / msDay);
+            if (idx >= 0 && idx < days) curr[idx] += c;
+        } else if (ts >= prevStart.getTime() && ts <= prevEnd.getTime()) {
+            const idx = Math.floor((ts - prevStart.getTime()) / msDay);
+            if (idx >= 0 && idx < days) prev[idx] += c;
+        }
+    });
+
+    // X-axis labels: short date for week view, day index for month view.
+    const labels = [];
+    for (let i = 0; i < days; i++) {
+        const d = new Date(currStart.getTime() + i * msDay);
+        if (range === "week") {
+            labels.push(d.toLocaleDateString("en-US", { weekday: "short" }));
+        } else {
+            labels.push(d.toLocaleDateString("en-US", { day: "numeric", month: "short" }));
+        }
+    }
+
+    return { curr, prev, labels, days, currStart, prevStart, prevEnd, end };
+}
+
+function renderCompareChart() {
+    const canvas = document.getElementById("compareChart");
+    const sumEl = document.getElementById("compareSummary");
+    if (!canvas || !sumEl || typeof Chart === "undefined") return;
+
+    const { curr, prev, labels, days } = buildComparisonSeries(compareRange);
+    const sumCurr = curr.reduce((a, b) => a + b, 0);
+    const sumPrev = prev.reduce((a, b) => a + b, 0);
+
+    let pct = 0, cls = "flat", arrow = "▬";
+    if (sumPrev === 0 && sumCurr > 0) { pct = 100; cls = "up"; arrow = "▲"; }
+    else if (sumPrev > 0) {
+        pct = Math.round(((sumCurr - sumPrev) / sumPrev) * 100);
+        if (pct > 3) { cls = "up"; arrow = "▲"; }
+        else if (pct < -3) { cls = "down"; arrow = "▼"; }
+    }
+
+    const currLabel = compareRange === "week" ? "Last 7 days" : "Last 30 days";
+    const prevLabel = compareRange === "week" ? "Prior 7 days" : "Prior 30 days";
+    sumEl.innerHTML = `
+        <span class="cmp-stat"><span class="cmp-dot curr"></span><span class="cmp-label">${currLabel}</span><span class="cmp-val">${sumCurr}</span></span>
+        <span class="cmp-stat"><span class="cmp-dot prev"></span><span class="cmp-label">${prevLabel}</span><span class="cmp-val" style="color:#6b7280;">${sumPrev}</span></span>
+        <span class="cmp-delta ${cls}">${arrow} ${Math.abs(pct)}%</span>
+    `;
+
+    const primary = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#006666";
+    const accent  = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()  || "#00d2d2";
+    const isDark = document.body.classList.contains("dark");
+    const ctx = canvas.getContext("2d");
+    const grad = ctx.createLinearGradient(0, 0, 0, 120);
+    grad.addColorStop(0, "rgba(0,168,168,0.32)");
+    grad.addColorStop(1, "rgba(0,168,168,0.02)");
+
+    if (compareChart) compareChart.destroy();
+    compareChart = new Chart(canvas, {
+        type: "line",
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: prevLabel,
+                    data: prev,
+                    borderColor: isDark ? "rgba(200,200,200,0.55)" : "rgba(120,120,120,0.55)",
+                    backgroundColor: "transparent",
+                    borderWidth: 2,
+                    borderDash: [5, 4],
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: isDark ? "#cfcfcf" : "#666",
+                    fill: false
+                },
+                {
+                    label: currLabel,
+                    data: curr,
+                    borderColor: primary,
+                    backgroundColor: grad,
+                    borderWidth: 2.5,
+                    tension: 0.4,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: accent,
+                    pointHoverBorderColor: "#fff",
+                    pointHoverBorderWidth: 2,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 500, easing: "easeOutQuart" },
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: isDark ? "rgba(15,26,26,0.96)" : "rgba(26,42,42,0.96)",
+                    titleColor: "#fff",
+                    bodyColor: "#e0f2f2",
+                    borderColor: accent,
+                    borderWidth: 1,
+                    padding: 10,
+                    cornerRadius: 10,
+                    titleFont: { weight: "800", size: 12 },
+                    bodyFont: { weight: "700", size: 12 },
+                    displayColors: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,102,102,0.06)", drawBorder: false },
+                    border: { display: false },
+                    ticks: { display: false }
+                },
+                x: {
+                    grid: { display: false, drawBorder: false },
+                    border: { display: false },
+                    ticks: {
+                        color: isDark ? "#7fb8b8" : "#557575",
+                        font: { weight: "700", size: 10 },
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: compareRange === "month" ? 6 : 7
+                    }
+                }
+            }
+        }
+    });
+}
+window.renderCompareChart = renderCompareChart;
+
 window.renderChart = renderChart;
 window.exportData = exportData;
 window.setActivityFilter = setActivityFilter;
